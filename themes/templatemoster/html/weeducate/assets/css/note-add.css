@@ -1,0 +1,115 @@
+#noteAddPage {
+  padding: 30px;
+  background: #f3f4f6;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 메인 카드 */
+#noteAddPage .main-card {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 30px;
+}
+
+/* 헤더 */
+#noteAddPage .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+#noteAddPage .card-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* 섹션 */
+#noteAddPage .section {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background: #fafafa;
+}
+#noteAddPage .section label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* 입력폼 */
+#noteAddPage .form-control,
+#noteAddPage textarea,
+#noteAddPage input[type="text"],
+#noteAddPage input[type="date"] {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  background: #fff;
+}
+#noteAddPage textarea {
+  min-height: 150px;
+}
+
+/* 업로드 */
+#noteAddPage .upload-box {
+  border: 2px dashed #bbb;
+  border-radius: 6px;
+  padding: 25px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  background: #fff;
+  cursor: pointer;
+}
+#noteAddPage .tip {
+  font-size: 12px;
+  color: #999;
+  margin-top: 6px;
+}
+
+/* 글자수 */
+#noteAddPage .text-count {
+  text-align: right;
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
+/* 옵션 버튼 */
+#noteAddPage .record-options {
+  display: flex;
+  gap: 8px;
+}
+#noteAddPage .record-option {
+  flex: 0 0 auto;
+  min-width: 90px;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+#noteAddPage .record-option.active {
+  background: #1a73e8;
+  color: #fff;
+  border-color: #1a73e8;
+}
+
+/* 버튼 */
+#noteAddPage .btn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+#noteAddPage .btn-primary { background: #1a73e8; color: #fff; }
+#noteAddPage .btn-outline { border: 1px solid #ccc; background: #fff; }

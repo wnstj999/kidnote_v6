@@ -5,4 +5,6 @@ function loadPage(page) {
       document.getElementById("content").innerHTML = html;
     })
     .catch(e => console.error(e));
-}
+  }
+    // 첫 화면 로딩
+

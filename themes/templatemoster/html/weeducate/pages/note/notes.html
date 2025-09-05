@@ -1,9 +1,41 @@
-<div class="ms-panel">
-  <div class="ms-panel-header d-flex justify-content-between align-items-center">
-    <h6>알림장 목록</h6>
-    <button class="btn btn-primary" onclick="loadPage('pages/note-add.html')">작성하기</button>
-  </div>
-  <div class="ms-panel-body">
-    <p>알림장이 없습니다.</p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>알림장 목록</title>
+  <script src="/assets/js/notes.js"></script>
+</head>
+<body>
+  <div id="content"></div>
+  <script>
+    fetch('/layout.html')
+      .then(r => r.text())
+      .then(html => {
+        document.write(html);
+      })
+      .then(() => {
+        document.getElementById("content").innerHTML = `
+          <div class="ms-panel">
+            <div class="ms-panel-header d-flex justify-content-between align-items-center">
+              <h6>알림장 목록</h6>
+              <div>
+                <button class="btn btn-primary" onclick="location.href='/pages/note/note-add.html'">작성하기</button>
+                <button class="btn btn-danger" onclick="clearNotes()">전체 삭제</button>
+              </div>
+            </div>
+            <div class="ms-panel-body">
+              <input id="search" class="form-control mb-2" placeholder="검색 (제목/내용)" oninput="renderNotes()">
+              <select id="sortOrder" onchange="renderNotes()" class="form-control mb-2" style="max-width:200px">
+                <option value="new">최신순</option>
+                <option value="old">오래된순</option>
+              </select>
+              <div id="notesList" class="row"></div>
+              <p id="noNotes" class="text-center text-muted">알림장이 없습니다.</p>
+            </div>
+          </div>
+        `;
+        renderNotes();
+      });
+  </script>
+</body>
+</html>

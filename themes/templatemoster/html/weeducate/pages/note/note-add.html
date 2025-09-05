@@ -1,23 +1,93 @@
-<div class="ms-panel">
-  <div class="ms-panel-header">
-    <h6>알림장 작성</h6>
-  </div>
-  <div class="ms-panel-body">
-    <form id="noteForm">
-      <div class="form-group">
-        <label>제목</label>
-        <input type="text" class="form-control" id="title" required>
-      </div>
-      <div class="form-group">
-        <label>내용</label>
-        <textarea class="form-control" id="content" rows="5" required></textarea>
-      </div>
-      <div class="form-group">
-        <label>날짜</label>
-        <input type="date" class="form-control" id="date" required>
-      </div>
-      <button type="submit" class="btn btn-primary">저장</button>
-      <button type="button" class="btn btn-light" onclick="loadPage('pages/notes.html')">취소</button>
-    </form>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>알림장 작성</title>
+  <link rel="stylesheet" href="/assets/css/note-add.css">
+</head>
+<body>
+  <script>
+    // layout.html 불러오기
+    fetch('/layout.html')
+      .then(r => r.text())
+      .then(html => {
+        document.write(html);   // layout 출력
+      })
+      .then(() => {
+        // layout 로드 후, 중앙 content 채우기
+        document.getElementById("content").innerHTML = `
+          <!-- 여기에 주신 코드 그대로 들어감 -->
+          <div id="noteAddPage">
+            <div class="main-card">
+
+              <!-- 헤더 -->
+              <div class="card-header">
+                <h2>알림장 작성</h2>
+                <div class="btn-actions">
+                  <button class="btn">취소</button>
+                  <button class="btn">임시저장</button>
+                  <button class="btn btn-primary">지금전송</button>
+                </div>
+              </div>
+
+              <!-- 날짜 -->
+              <div class="section">
+                <label>날짜</label>
+                <input type="date" class="form-control">
+              </div>
+
+              <!-- 원아 선택 -->
+              <div class="section">
+                <label>원아 선택 <span>(0명)</span></label>
+                <button class="btn btn-outline">+ 원아 선택</button>
+              </div>
+
+              <!-- 내용 -->
+              <div class="section">
+                <label>내용</label>
+                <textarea class="form-control" placeholder="선택된 원아의 부모님에게 1:1로 전달됩니다."></textarea>
+                <div class="text-count">0/5000</div>
+              </div>
+
+              <!-- 사진 및 동영상 -->
+              <div class="section">
+                <label>사진 및 동영상</label>
+                <div class="upload-box">+ 파일 추가</div>
+                <p class="tip">사진: 30MB 이하 jpg, png, gif / 동영상: mp4, mov 최대 5분 이내</p>
+              </div>
+
+              <!-- 첨부파일 -->
+              <div class="section">
+                <label>첨부파일</label>
+                <div class="upload-box">+ 파일 추가</div>
+                <p class="tip">100MB 이하 파일만 첨부 가능 (hwp, doc, pdf, mp3 등)</p>
+              </div>
+
+              <!-- 생활기록 -->
+              <div class="section">
+                <label>생활기록</label>
+                <div class="record-options">
+                  <div class="record-option">좋음</div>
+                  <div class="record-option">보통</div>
+                  <div class="record-option">나쁨</div>
+                </div>
+              </div>
+
+              <!-- 상세입력 -->
+              <div class="section">
+                <label>상세입력</label>
+                <input type="text" class="form-control" placeholder="이유식/간식">
+                <input type="text" class="form-control" placeholder="수유여부">
+                <input type="text" class="form-control" placeholder="수면시간">
+                <input type="text" class="form-control" placeholder="배변상태">
+                <input type="text" class="form-control" placeholder="체온 (예: 오전 36.5 / 오후 36.5)">
+              </div>
+
+            </div>
+          </div>
+        `;
+      });
+  </script>
+</body>
+</html>
