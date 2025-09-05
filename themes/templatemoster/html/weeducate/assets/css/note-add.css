@@ -1,115 +1,122 @@
 #noteAddPage {
-  padding: 30px;
-  background: #f3f4f6;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background: #f5f6f8;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
-/* 메인 카드 */
-#noteAddPage .main-card {
-  max-width: 1000px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 30px;
+#noteAddPage .note-card {
+  background: #fff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
+  padding: 20px !important;
+  width: 100% !important;
+  max-width: 900px !important;
 }
 
-/* 헤더 */
-#noteAddPage .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-#noteAddPage .card-header h2 {
-  font-size: 20px;
-  font-weight: 600;
+#noteAddPage .note-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding-bottom: 10px !important;
+  margin-bottom: 20px !important;
 }
 
-/* 섹션 */
-#noteAddPage .section {
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 15px;
-  margin-bottom: 20px;
-  background: #fafafa;
-}
-#noteAddPage .section label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 8px;
-  font-size: 14px;
+#noteAddPage .note-header h2 {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
 }
 
-/* 입력폼 */
-#noteAddPage .form-control,
-#noteAddPage textarea,
-#noteAddPage input[type="text"],
-#noteAddPage input[type="date"] {
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 10px 12px;
-  font-size: 14px;
-  background: #fff;
-}
-#noteAddPage textarea {
-  min-height: 150px;
+#noteAddPage .note-btn {
+  padding: 8px 14px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
 }
 
-/* 업로드 */
+#noteAddPage .note-btn.primary {
+  background: #4a90e2 !important;
+  color: #fff !important;
+}
+
+#noteAddPage .note-section {
+  margin-bottom: 16px !important;
+}
+
+#noteAddPage .note-section.inline {
+  display: flex !important;
+  gap: 16px !important;
+}
+
+#noteAddPage .note-section label {
+  display: block !important;
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+}
+
+#noteAddPage .note-input {
+  width: 100% !important;
+  padding: 8px 10px !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  background: #fff !important;
+}
+
+#noteAddPage textarea.note-input {
+  min-height: 120px !important;
+  resize: vertical !important;
+}
+
 #noteAddPage .upload-box {
-  border: 2px dashed #bbb;
-  border-radius: 6px;
-  padding: 25px;
-  text-align: center;
-  color: #666;
-  font-size: 14px;
-  background: #fff;
-  cursor: pointer;
+  border: 2px dashed #cbd5e1 !important;
+  border-radius: 4px !important;
+  padding: 20px !important;
+  text-align: center !important;
+  color: #94a3b8 !important;
+  cursor: pointer !important;
 }
+
+#noteAddPage .upload-box:hover {
+  border-color: #4a90e2 !important;
+  color: #4a90e2 !important;
+}
+
 #noteAddPage .tip {
-  font-size: 12px;
-  color: #999;
-  margin-top: 6px;
+  font-size: 12px !important;
+  color: #888 !important;
+  margin-top: 4px !important;
 }
 
-/* 글자수 */
-#noteAddPage .text-count {
-  text-align: right;
-  font-size: 12px;
-  color: #999;
-  margin-top: 5px;
+#noteAddPage .checkbox-group {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
 }
 
-/* 옵션 버튼 */
+#noteAddPage .checkbox-group label {
+  font-size: 14px !important;
+}
+
 #noteAddPage .record-options {
-  display: flex;
-  gap: 8px;
-}
-#noteAddPage .record-option {
-  flex: 0 0 auto;
-  min-width: 90px;
-  padding: 10px;
-  text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: #fff;
-  cursor: pointer;
-}
-#noteAddPage .record-option.active {
-  background: #1a73e8;
-  color: #fff;
-  border-color: #1a73e8;
+  display: flex !important;
+  gap: 8px !important;
 }
 
-/* 버튼 */
-#noteAddPage .btn {
-  padding: 8px 18px;
-  border-radius: 6px;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
+#noteAddPage .record-option {
+  padding: 6px 12px !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 20px !important;
+  background: #f8fafc !important;
+  cursor: pointer !important;
 }
-#noteAddPage .btn-primary { background: #1a73e8; color: #fff; }
-#noteAddPage .btn-outline { border: 1px solid #ccc; background: #fff; }
+
+#noteAddPage .record-option:hover {
+  background: #4a90e2 !important;
+  color: #fff !important;
+  border-color: #4a90e2 !important;
+}

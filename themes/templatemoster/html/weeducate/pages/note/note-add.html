@@ -7,87 +7,93 @@
   <link rel="stylesheet" href="/assets/css/note-add.css">
 </head>
 <body>
-  <script>
-    // layout.html 불러오기
-    fetch('/layout.html')
-      .then(r => r.text())
-      .then(html => {
-        document.write(html);   // layout 출력
-      })
-      .then(() => {
-        // layout 로드 후, 중앙 content 채우기
-        document.getElementById("content").innerHTML = `
-          <!-- 여기에 주신 코드 그대로 들어감 -->
-          <div id="noteAddPage">
-            <div class="main-card">
+<script>
+fetch('/layout.html')
+  .then(r => r.text())
+  .then(html => {
+    document.write(html);
+  })
+  .then(() => {
+    const content = document.getElementById('content');
+    if (!content) return;
+    content.innerHTML = `
+      <div id="noteAddPage">
+        <div class="note-card">
 
-              <!-- 헤더 -->
-              <div class="card-header">
-                <h2>알림장 작성</h2>
-                <div class="btn-actions">
-                  <button class="btn">취소</button>
-                  <button class="btn">임시저장</button>
-                  <button class="btn btn-primary">지금전송</button>
-                </div>
-              </div>
+          <div class="note-header">
+            <h2>알림장 작성</h2>
+            <button class="note-btn primary">저장하기</button>
+          </div>
 
-              <!-- 날짜 -->
-              <div class="section">
-                <label>날짜</label>
-                <input type="date" class="form-control">
-              </div>
-
-              <!-- 원아 선택 -->
-              <div class="section">
-                <label>원아 선택 <span>(0명)</span></label>
-                <button class="btn btn-outline">+ 원아 선택</button>
-              </div>
-
-              <!-- 내용 -->
-              <div class="section">
-                <label>내용</label>
-                <textarea class="form-control" placeholder="선택된 원아의 부모님에게 1:1로 전달됩니다."></textarea>
-                <div class="text-count">0/5000</div>
-              </div>
-
-              <!-- 사진 및 동영상 -->
-              <div class="section">
-                <label>사진 및 동영상</label>
-                <div class="upload-box">+ 파일 추가</div>
-                <p class="tip">사진: 30MB 이하 jpg, png, gif / 동영상: mp4, mov 최대 5분 이내</p>
-              </div>
-
-              <!-- 첨부파일 -->
-              <div class="section">
-                <label>첨부파일</label>
-                <div class="upload-box">+ 파일 추가</div>
-                <p class="tip">100MB 이하 파일만 첨부 가능 (hwp, doc, pdf, mp3 등)</p>
-              </div>
-
-              <!-- 생활기록 -->
-              <div class="section">
-                <label>생활기록</label>
-                <div class="record-options">
-                  <div class="record-option">좋음</div>
-                  <div class="record-option">보통</div>
-                  <div class="record-option">나쁨</div>
-                </div>
-              </div>
-
-              <!-- 상세입력 -->
-              <div class="section">
-                <label>상세입력</label>
-                <input type="text" class="form-control" placeholder="이유식/간식">
-                <input type="text" class="form-control" placeholder="수유여부">
-                <input type="text" class="form-control" placeholder="수면시간">
-                <input type="text" class="form-control" placeholder="배변상태">
-                <input type="text" class="form-control" placeholder="체온 (예: 오전 36.5 / 오후 36.5)">
-              </div>
-
+          <div class="note-section inline">
+            <div>
+              <label>날짜</label>
+              <input type="date" class="note-input">
+            </div>
+            <div>
+              <label>반 선택</label>
+              <select class="note-input">
+                <option>반을 선택하세요</option>
+              </select>
             </div>
           </div>
-        `;
-      });
-  </script>
+
+          <div class="note-section">
+            <label>제목</label>
+            <input type="text" class="note-input" placeholder="제목을 입력하세요">
+          </div>
+
+          <div class="note-section">
+            <label>내용</label>
+            <textarea class="note-input" placeholder="내용을 입력하세요"></textarea>
+          </div>
+
+          <div class="note-section">
+            <label>파일 첨부</label>
+            <div class="upload-box">+ 파일 추가</div>
+            <p class="tip">이미지: jpg, jpeg, gif, png / 동영상: mp4, mov / 문서: pdf, doc, ppt (15MB 이하)</p>
+          </div>
+
+          <div class="note-section">
+            <label>활동영역</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox"> 기본생활</label>
+              <label><input type="checkbox"> 신체운동</label>
+              <label><input type="checkbox"> 사회관계</label>
+              <label><input type="checkbox"> 의사소통</label>
+              <label><input type="checkbox"> 예술경험</label>
+              <label><input type="checkbox"> 자연탐구</label>
+            </div>
+          </div>
+
+          <div class="note-section inline">
+            <div>
+              <label>조식</label>
+              <input type="text" class="note-input">
+            </div>
+            <div>
+              <label>중식</label>
+              <input type="text" class="note-input">
+            </div>
+            <div>
+              <label>간식</label>
+              <input type="text" class="note-input">
+            </div>
+          </div>
+
+          <div class="note-section">
+            <label>생활기록</label>
+            <div class="record-options">
+              <button class="record-option">좋음</button>
+              <button class="record-option">보통</button>
+              <button class="record-option">나쁨</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+  });
+</script>
 </body>
 </html>
