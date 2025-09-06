@@ -7,93 +7,107 @@
   <link rel="stylesheet" href="/assets/css/note-add.css">
 </head>
 <body>
+<div id="layout-root"></div>
+
 <script>
-fetch('/layout.html')
-  .then(r => r.text())
-  .then(html => {
-    document.write(html);
-  })
-  .then(() => {
-    const content = document.getElementById('content');
-    if (!content) return;
-    content.innerHTML = `
-      <div id="noteAddPage">
-        <div class="note-card">
+async function loadLayoutAndContent() {
+  // 1. layout.html 불러오기
+  const layoutHtml = await fetch('/layout.html').then(r => r.text());
+  document.getElementById('layout-root').innerHTML = layoutHtml;
 
-          <div class="note-header">
-            <h2>알림장 작성</h2>
-            <button class="note-btn primary">저장하기</button>
-          </div>
+  // 2. 중앙 콘텐츠 주입
+  const content = document.getElementById('content');
+  if (!content) return;
+  content.innerHTML = `
+    <div id="noteAddPage">
+      <div class="note-card">
 
-          <div class="note-section inline">
-            <div>
-              <label>날짜</label>
-              <input type="date" class="note-input">
-            </div>
-            <div>
-              <label>반 선택</label>
-              <select class="note-input">
-                <option>반을 선택하세요</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="note-section">
-            <label>제목</label>
-            <input type="text" class="note-input" placeholder="제목을 입력하세요">
-          </div>
-
-          <div class="note-section">
-            <label>내용</label>
-            <textarea class="note-input" placeholder="내용을 입력하세요"></textarea>
-          </div>
-
-          <div class="note-section">
-            <label>파일 첨부</label>
-            <div class="upload-box">+ 파일 추가</div>
-            <p class="tip">이미지: jpg, jpeg, gif, png / 동영상: mp4, mov / 문서: pdf, doc, ppt (15MB 이하)</p>
-          </div>
-
-          <div class="note-section">
-            <label>활동영역</label>
-            <div class="checkbox-group">
-              <label><input type="checkbox"> 기본생활</label>
-              <label><input type="checkbox"> 신체운동</label>
-              <label><input type="checkbox"> 사회관계</label>
-              <label><input type="checkbox"> 의사소통</label>
-              <label><input type="checkbox"> 예술경험</label>
-              <label><input type="checkbox"> 자연탐구</label>
-            </div>
-          </div>
-
-          <div class="note-section inline">
-            <div>
-              <label>조식</label>
-              <input type="text" class="note-input">
-            </div>
-            <div>
-              <label>중식</label>
-              <input type="text" class="note-input">
-            </div>
-            <div>
-              <label>간식</label>
-              <input type="text" class="note-input">
-            </div>
-          </div>
-
-          <div class="note-section">
-            <label>생활기록</label>
-            <div class="record-options">
-              <button class="record-option">좋음</button>
-              <button class="record-option">보통</button>
-              <button class="record-option">나쁨</button>
-            </div>
-          </div>
-
+        <div class="note-header">
+          <h2>알림장 작성</h2>
+          <button class="note-btn primary">저장하기</button>
         </div>
+
+        <div class="note-section inline">
+          <div>
+            <label>날짜</label>
+            <input type="date" class="note-input">
+          </div>
+          <div>
+            <label>반 선택</label>
+            <select class="note-input">
+              <option>반을 선택하세요</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="note-section">
+          <label>제목</label>
+          <input type="text" class="note-input" placeholder="제목을 입력하세요">
+        </div>
+
+        <div class="note-section">
+          <label>내용</label>
+          <textarea class="note-input" placeholder="내용을 입력하세요"></textarea>
+        </div>
+
+        <div class="note-section">
+          <label>파일 첨부</label>
+          <div class="upload-box">+ 파일 추가</div>
+          <p class="tip">이미지: jpg, jpeg, gif, png / 동영상: mp4, mov / 문서: pdf, doc, ppt (15MB 이하)</p>
+        </div>
+
+        <div class="note-section">
+          <label>활동영역</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox"> 기본생활</label>
+            <label><input type="checkbox"> 신체운동</label>
+            <label><input type="checkbox"> 사회관계</label>
+            <label><input type="checkbox"> 의사소통</label>
+            <label><input type="checkbox"> 예술경험</label>
+            <label><input type="checkbox"> 자연탐구</label>
+          </div>
+        </div>
+
+        <div class="note-section inline">
+          <div>
+            <label>조식</label>
+            <input type="text" class="note-input">
+          </div>
+          <div>
+            <label>중식</label>
+            <input type="text" class="note-input">
+          </div>
+          <div>
+            <label>간식</label>
+            <input type="text" class="note-input">
+          </div>
+        </div>
+
+        <div class="note-section">
+          <label>생활기록</label>
+          <div class="record-options">
+            <button class="record-option">좋음</button>
+            <button class="record-option">보통</button>
+            <button class="record-option">나쁨</button>
+          </div>
+        </div>
+
       </div>
-    `;
-  });
+    </div>
+  `;
+
+  // 3. layout.js 강제 로드
+  const script = document.createElement('script');
+  script.src = '/assets/js/layout.js'; // 실제 경로 확인
+  script.onload = () => {
+    console.log('layout.js 로드 완료');
+    // layout.js 안에 초기화 함수가 있다면 여기서 호출
+    // 예: if (typeof initLayout === 'function') initLayout();
+  };
+  document.body.appendChild(script);
+}
+
+loadLayoutAndContent();
 </script>
 </body>
 </html>
