@@ -21,12 +21,10 @@ async function loadLayoutAndContent() {
   content.innerHTML = `
     <div id="noteAddPage">
       <div class="note-card">
-
         <div class="note-header">
           <h2>알림장 작성</h2>
           <button class="note-btn primary">저장하기</button>
         </div>
-
         <div class="note-section inline">
           <div>
             <label>날짜</label>
@@ -39,23 +37,19 @@ async function loadLayoutAndContent() {
             </select>
           </div>
         </div>
-
         <div class="note-section">
           <label>제목</label>
           <input type="text" class="note-input" placeholder="제목을 입력하세요">
         </div>
-
         <div class="note-section">
           <label>내용</label>
           <textarea class="note-input" placeholder="내용을 입력하세요"></textarea>
         </div>
-
         <div class="note-section">
           <label>파일 첨부</label>
           <div class="upload-box">+ 파일 추가</div>
           <p class="tip">이미지: jpg, jpeg, gif, png / 동영상: mp4, mov / 문서: pdf, doc, ppt (15MB 이하)</p>
         </div>
-
         <div class="note-section">
           <label>활동영역</label>
           <div class="checkbox-group">
@@ -67,7 +61,6 @@ async function loadLayoutAndContent() {
             <label><input type="checkbox"> 자연탐구</label>
           </div>
         </div>
-
         <div class="note-section inline">
           <div>
             <label>조식</label>
@@ -82,7 +75,6 @@ async function loadLayoutAndContent() {
             <input type="text" class="note-input">
           </div>
         </div>
-
         <div class="note-section">
           <label>생활기록</label>
           <div class="record-options">
@@ -91,20 +83,44 @@ async function loadLayoutAndContent() {
             <button class="record-option">나쁨</button>
           </div>
         </div>
-
       </div>
     </div>
   `;
 
-  // 3. layout.js 강제 로드
-  const script = document.createElement('script');
-  script.src = '/assets/js/layout.js'; // 실제 경로 확인
-  script.onload = () => {
-    console.log('layout.js 로드 완료');
-    // layout.js 안에 초기화 함수가 있다면 여기서 호출
-    // 예: if (typeof initLayout === 'function') initLayout();
-  };
-  document.body.appendChild(script);
+  // 3. UI 초기화 실행
+  initLayoutUI();
+}
+
+// 4. UI 초기화 함수
+function initLayoutUI() {
+  // 사이드바 토글
+  document.querySelectorAll('[data-toggle="sidebar"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.body.classList.toggle('sidebar-open');
+    });
+  });
+
+  // 퀵바 토글
+  document.querySelectorAll('.ms-quick-bar-item a').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const target = btn.getAttribute('href');
+      document.querySelectorAll('.ms-quick-bar-item').forEach(item => item.classList.remove('active'));
+      btn.parentElement.classList.add('active');
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+      document.querySelector(target)?.classList.add('active');
+    });
+  });
+
+  // 드롭다운 메뉴
+  document.querySelectorAll('[data-toggle="dropdown"]').forEach(drop => {
+    drop.addEventListener('click', e => {
+      e.preventDefault();
+      drop.parentElement.classList.toggle('show');
+    });
+  });
+
+  console.log('UI 초기화 완료');
 }
 
 loadLayoutAndContent();
