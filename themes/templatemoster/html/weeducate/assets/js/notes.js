@@ -1,50 +1,34 @@
-
-// 버튼 active 토글
+// 저장
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".btn-group").forEach(group => {
-    group.querySelectorAll(".btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        group.querySelectorAll(".btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-      });
+  const saveBtn = document.getElementById("saveNote");
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      const note = {
+        date: document.getElementById("date").value,
+        className: document.getElementById("class").value,
+        title: document.getElementById("title").value || "제목 없음",
+        content: document.getElementById("contentInput").value || ""
+      };
+
+      let notes = JSON.parse(localStorage.getItem("notes")) || [];
+      notes.push(note);
+      localStorage.setItem("notes", JSON.stringify(notes));
+      window.location.href = "/pages/note/notes.html";
     });
-  });
+  }
 
-  // 임시저장
-  document.getElementById("draftBtn").addEventListener("click", () => {
-    saveNote(true);
-  });
-
-  // 저장하기
-  document.getElementById("saveBtn").addEventListener("click", () => {
-    saveNote(false);
-  });
+  // 불러오기
+  const container = document.getElementById("notesContainer");
+  if (container) {
+    const notes = JSON.parse(localStorage.getItem("notes")) || [];
+    container.innerHTML = notes.length
+      ? notes.map(n => `
+        <div class="note-card">
+          <h5>${n.title}</h5>
+          <p class="note-meta">${n.date} | ${n.className}</p>
+          <p>${n.content}</p>
+        </div>
+      `).join("")
+      : "<p>작성된 알림장이 없습니다.</p>";
+  }
 });
-
-function saveNote(isDraft) {
-  const note = {
-    date: document.getElementById("noteDate").value,
-    children: document.getElementById("selectedChildren").innerText,
-    content: document.getElementById("noteContent").value,
-    condition: getSelected("condition"),
-    health: getSelected("health"),
-    temperature: getSelected("temperature"),
-    sleep: getSelected("sleep"),
-    bowel: getSelected("bowel"),
-    bowelTime: document.getElementById("bowelTime").value,
-    draft: isDraft
-  };
-
-  let notes = JSON.parse(localStorage.getItem("notes") || "[]");
-  notes.push(note);
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  alert(isDraft ? "임시저장 되었습니다." : "저장 완료!");
-}
-
-function getSelected(groupName) {
-  const group = document.querySelector(`.btn-group[data-group="${groupName}"]`);
-  if (!group) return "";
-  const active = group.querySelector(".btn.active");
-  return active ? active.innerText : "";
-}

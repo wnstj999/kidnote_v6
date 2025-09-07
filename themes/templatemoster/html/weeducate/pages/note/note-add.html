@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>알림장 작성</title>
-  <link rel="stylesheet" href="/assets/css/note-add.css">
+
+  <!-- 레이아웃에서 사용하는 공용 CSS (layout.html의 <head>에서 가져옴) -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="/vendors/iconic-fonts/font-awesome/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/vendors/iconic-fonts/flat-icons/flaticon.css" />
+  <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/assets/css/jquery-ui.min.css" rel="stylesheet" />
+  <link href="/assets/css/slick.css" rel="stylesheet" />
+  <link href="/assets/css/style.css" rel="stylesheet" />
+
+  <!-- 네가 커스텀한 페이지 전용 CSS는 그대로 유지 -->
+  <link rel="stylesheet" href="/assets/css/note-add.css" />
 </head>
 <body>
-<div id="layout-root"></div>
+  <!-- 여기로 layout.html의 body(외곽 UI)만 주입 -->
+  <div id="layout-root"></div>
 
-<script>
-async function loadLayoutAndContent() {
-  // 1. layout.html 불러오기
-  const layoutHtml = await fetch('/layout.html').then(r => r.text());
-  document.getElementById('layout-root').innerHTML = layoutHtml;
-
-  // 2. 중앙 콘텐츠 주입
-  const content = document.getElementById('content');
-  if (!content) return;
-  content.innerHTML = `
+  <!-- 네가 커스텀한 알림장 마크업은 그대로 보관 후 #content에 넣을게 -->
+  <template id="NOTE_ADD_CONTENT">
     <div id="noteAddPage">
       <div class="note-card">
         <div class="note-header">
           <h2>알림장 작성</h2>
           <button class="note-btn primary">저장하기</button>
         </div>
+
         <div class="note-section inline">
           <div>
             <label>날짜</label>
@@ -37,19 +42,23 @@ async function loadLayoutAndContent() {
             </select>
           </div>
         </div>
+
         <div class="note-section">
           <label>제목</label>
           <input type="text" class="note-input" placeholder="제목을 입력하세요">
         </div>
+
         <div class="note-section">
           <label>내용</label>
           <textarea class="note-input" placeholder="내용을 입력하세요"></textarea>
         </div>
+
         <div class="note-section">
           <label>파일 첨부</label>
           <div class="upload-box">+ 파일 추가</div>
           <p class="tip">이미지: jpg, jpeg, gif, png / 동영상: mp4, mov / 문서: pdf, doc, ppt (15MB 이하)</p>
         </div>
+
         <div class="note-section">
           <label>활동영역</label>
           <div class="checkbox-group">
@@ -61,6 +70,7 @@ async function loadLayoutAndContent() {
             <label><input type="checkbox"> 자연탐구</label>
           </div>
         </div>
+
         <div class="note-section inline">
           <div>
             <label>조식</label>
@@ -75,6 +85,7 @@ async function loadLayoutAndContent() {
             <input type="text" class="note-input">
           </div>
         </div>
+
         <div class="note-section">
           <label>생활기록</label>
           <div class="record-options">
@@ -85,45 +96,75 @@ async function loadLayoutAndContent() {
         </div>
       </div>
     </div>
-  `;
+  </template>
 
-  // 3. UI 초기화 실행
-  initLayoutUI();
-}
+  <script>
+    // 레이아웃에서 필요한 테마 스크립트들 (layout.html 하단에서 가져옴)
+    const THEME_SCRIPTS_IN_ORDER = [
+      "/assets/js/jquery-3.3.1.min.js",
+      "/assets/js/popper.min.js",
+      "/assets/js/bootstrap.min.js",
+      "/assets/js/perfect-scrollbar.js",
+      "/assets/js/jquery-ui.min.js",
+      "/assets/js/Chart.bundle.min.js",
+      "/assets/js/index.js",
+      "/assets/js/framework.js",
+      "/assets/js/settings.js",
+      "/assets/js/datatables.min.js",
+      "/assets/js/data-tables.js"
+      // 필요하면 "/assets/js/slick.min.js"도 추가
+    ];
 
-// 4. UI 초기화 함수
-function initLayoutUI() {
-  // 사이드바 토글
-  document.querySelectorAll('[data-toggle="sidebar"]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.body.classList.toggle('sidebar-open');
+    function loadScriptSequentially(urls) {
+      return urls.reduce((p, url) => {
+        return p.then(() => new Promise((resolve, reject) => {
+          // 중복 삽입 방지
+          if ([...document.scripts].some(s => s.src.endsWith(url))) return resolve();
+
+          const s = document.createElement("script");
+          s.src = url;
+          s.onload = resolve;
+          s.onerror = reject;
+          document.body.appendChild(s);
+        }));
+      }, Promise.resolve());
+    }
+
+    async function loadLayoutAndContent() {
+      // 1) layout.html을 가져와서 "body 안쪽"만 주입 (head에 있던 link/script는 별도로 로드)
+      const layoutText = await fetch("/layout.html").then(r => {
+        if (!r.ok) throw new Error("layout.html 불러오기 실패");
+        return r.text();
+      });
+
+      const parsed = new DOMParser().parseFromString(layoutText, "text/html");
+      const bodyInner = parsed.body ? parsed.body.innerHTML : layoutText;
+      document.getElementById("layout-root").innerHTML = bodyInner;
+
+      // 2) #content 안에 네가 만든 알림장 UI를 그대로 삽입
+      const content = document.getElementById("content");
+      if (!content) {
+        console.error("#content 영역을 찾을 수 없습니다. layout.html 구조를 확인하세요.");
+        return;
+      }
+      content.innerHTML = document.getElementById("NOTE_ADD_CONTENT").innerHTML;
+
+      // 3) 테마 스크립트 순차 로드 (이 스크립트들이 외곽 UI를 초기화함)
+      await loadScriptSequentially(THEME_SCRIPTS_IN_ORDER);
+
+      // 4) 필요 시 레이아웃 초기화 함수 수동 호출 (테마에 따라 없음/있음)
+      if (typeof window.initLayoutUI === "function") {
+        window.initLayoutUI();
+      }
+
+      console.log("레이아웃 + 알림장 페이지 로드 완료");
+    }
+
+    loadLayoutAndContent().catch(err => {
+      console.error(err);
+      alert("레이아웃 로드 중 오류가 발생했습니다. 콘솔을 확인하세요.");
     });
-  });
-
-  // 퀵바 토글
-  document.querySelectorAll('.ms-quick-bar-item a').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      const target = btn.getAttribute('href');
-      document.querySelectorAll('.ms-quick-bar-item').forEach(item => item.classList.remove('active'));
-      btn.parentElement.classList.add('active');
-      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
-      document.querySelector(target)?.classList.add('active');
-    });
-  });
-
-  // 드롭다운 메뉴
-  document.querySelectorAll('[data-toggle="dropdown"]').forEach(drop => {
-    drop.addEventListener('click', e => {
-      e.preventDefault();
-      drop.parentElement.classList.toggle('show');
-    });
-  });
-
-  console.log('UI 초기화 완료');
-}
-
-loadLayoutAndContent();
-</script>
+    
+  </script>
 </body>
 </html>
